@@ -1,5 +1,7 @@
 applications:
-- disk_quota: 1024M
+-servies:
+  -ElephantSQL-o8
+  disk_quota: 1024M
   host: itucsdb1722
   name: itucsdb1722
   path: .
