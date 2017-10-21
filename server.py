@@ -77,4 +77,4 @@ if __name__ == '__main__':
         app.config['dsn'] = """user='vagrant' password='vagrant'
                                host='localhost' port=5432 dbname='postgres'"""
 
-    app.run(host='0.0.0.0', port=port, debug=debug)
+    app.run(host='127.0.0.1', port=port, debug=debug)
