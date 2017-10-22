@@ -60,7 +60,7 @@ def counter_page():
         query = "SELECT N FROM COUNTER"
         cursor.execute(query)
         count = cursor.fetchone()[0]
-    return "This page was accessed %d times." % count
+    return render_template("count.html", counter=count)
 
 
 if __name__ == '__main__':
