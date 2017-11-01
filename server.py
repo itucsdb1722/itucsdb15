@@ -7,10 +7,27 @@ import re
 from flask import Flask
 from flask import redirect
 from flask import render_template
+from flask import request
+from flask import session
+from flask import flash
+from functools import wraps
 from flask.helpers import url_for
 
 
 app = Flask(__name__)
+
+app.secret_key = "secret"
+
+
+def login_check(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'logged_in' in session:
+            return f(*args, **kwargs)
+        else:
+            flash("You need to login first.")
+            return redirect(url_for('login'))
+    return wrap
 
 
 def get_elephantsql_dsn(vcap_services):
@@ -24,7 +41,13 @@ def get_elephantsql_dsn(vcap_services):
     return dsn
 
 
+@app.route('/intro')
+def intro():
+    return "Welcome to IBDB"
+
+
 @app.route('/')
+@login_check
 def home_page():
     now = datetime.datetime.now()
     return render_template('home.html', current_time=now.ctime())
@@ -46,6 +69,28 @@ def initialize_database():
 
         connection.commit()
     return redirect(url_for('home_page'))
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+    if request.method == 'POST':
+        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
+            error = 'Invalid username or password, try again.'
+        else:
+            session['logged_in'] = True
+            flash('You are logged in')
+            return redirect(url_for('home_page'))
+
+    return render_template('login.html', error=error)
+
+
+@app.route('/logout')
+@login_check
+def logout():
+    session.pop('logged_in', None)
+    flash('You are logged out')
+    return redirect(url_for('intro'))
 
 
 @app.route('/count')

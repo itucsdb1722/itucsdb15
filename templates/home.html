@@ -8,6 +8,10 @@
   <body>
     <h1>Internet Book </h1>
     <a href = "/count"> Go to counter page</a>
+    <p>Click <a href="/logout">here</a> to logout.</p>
+      {% for message in get_flashed_messages() %}
+        {{ message }}
+      {% endfor %}
     <footer>
       <div id="datetime">{{ current_time }}</div>
     </footer>
