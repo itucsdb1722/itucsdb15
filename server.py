@@ -57,31 +57,45 @@ def home_page():
 def initialize_database():
     with dbapi2.connect(app.config['dsn']) as connection:
         cursor = connection.cursor()
-
-        query = """DROP TABLE IF EXISTS COUNTER"""
+        query = """DROP TABLE IF EXISTS USERS"""
         cursor.execute(query)
-
-        query = """CREATE TABLE COUNTER (N INTEGER)"""
-        cursor.execute(query)
-
-        query = """INSERT INTO COUNTER (N) VALUES (0)"""
-        cursor.execute(query)
-
+        statement = """CREATE TABLE USERS (NAME VARCHAR(10) )"""
+        cursor.execute(statement)
         connection.commit()
+        cursor.close()
+        connection.close()
     return redirect(url_for('home_page'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    with dbapi2.connect(app.config['dsn']) as connection:
+        cursor = connection.cursor()
+        query = """DROP TABLE IF EXISTS USERS"""
+        cursor.execute(query)
+        statement = """CREATE TABLE USERS (USERNAME VARCHAR(10), PASSWORD VARCHAR(10) )"""
+        cursor.execute(statement)
+        query = """INSERT INTO USERS VALUES ('aydos','a1')"""
+        cursor.execute(query)
+        query = """INSERT INTO USERS VALUES ('baran','b2')"""
+        cursor.execute(query)
+
+
+
     error = None
+    username = request.form['username']
+    password = request.form['password']
+    statement = "SELECT * from Users where Username='" + username + "' and Password='" + password + "'"
+    cursor.execute(statement)
+    user = cursor.fetchone()
     if request.method == 'POST':
-        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
-            error = 'Invalid username or password, try again.'
-        else:
+        if user :
             session['logged_in'] = True
             flash('You are logged in')
             return redirect(url_for('home_page'))
-
+        else:
+            error = 'Invalid username or password, try again.'
+    cursor.close()
     return render_template('login.html', error=error)
 
 
