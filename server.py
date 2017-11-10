@@ -61,6 +61,8 @@ def initialize_database():
         cursor.execute(query)
         statement = """CREATE TABLE USERS (NAME VARCHAR(10) )"""
         cursor.execute(statement)
+        query = """INSERT INTO USERS (NAME) VALUES ('aydos')"""
+        cursor.execute(query)
         connection.commit()
         cursor.close()
         connection.close()
@@ -83,12 +85,12 @@ def login():
 
 
     error = None
-    username = request.form['username']
-    password = request.form['password']
-    statement = "SELECT * from Users where Username='" + username + "' and Password='" + password + "'"
-    cursor.execute(statement)
-    user = cursor.fetchone()
     if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        statement = "SELECT * from Users where Username='" + username + "' and Password='" + password + "'"
+        cursor.execute(statement)
+        user = cursor.fetchone()
         if user :
             session['logged_in'] = True
             flash('You are logged in')
