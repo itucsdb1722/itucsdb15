@@ -59,10 +59,8 @@ def initialize_database():
         cursor = connection.cursor()
         query = """DROP TABLE IF EXISTS USERS"""
         cursor.execute(query)
-        statement = """CREATE TABLE USERS (NAME VARCHAR(10) )"""
+        statement = """CREATE TABLE USERS (NAME VARCHAR(10), PASSWORD VARCHAR(10) )"""
         cursor.execute(statement)
-        query = """INSERT INTO USERS (NAME) VALUES ('aydos')"""
-        cursor.execute(query)
         connection.commit()
         cursor.close()
         connection.close()
@@ -73,10 +71,6 @@ def initialize_database():
 def login():
     with dbapi2.connect(app.config['dsn']) as connection:
         cursor = connection.cursor()
-        query = """DROP TABLE IF EXISTS USERS"""
-        cursor.execute(query)
-        statement = """CREATE TABLE USERS (USERNAME VARCHAR(10), PASSWORD VARCHAR(10) )"""
-        cursor.execute(statement)
         query = """INSERT INTO USERS VALUES ('aydos','a1')"""
         cursor.execute(query)
         query = """INSERT INTO USERS VALUES ('baran','b2')"""
