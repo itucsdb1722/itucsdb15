@@ -103,6 +103,7 @@ def signup():
         statement = "SELECT * from Users where Username='" + username + "'"
         cursor.execute(statement)
         test = cursor.fetchone()
+
         if test:
             error = 'Username already in use, try again'
         else:
