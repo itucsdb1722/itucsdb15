@@ -100,9 +100,20 @@ def signup():
     error = None
     if request.method == 'POST':
         username = request.form['username']
-        password = request.form['password']
-        cursor.execute( """insert into users (username,password) values (%s,%s)""",(username,password))
-    connection.commit()
+        statement = "SELECT * from Users where Username='" + username + "'"
+        cursor.execute(statement)
+        test = cursor.fetchone()
+
+
+        if test:
+            error = 'Username already in use, try again'
+        else:
+            password = request.form['password']
+            query = "insert into users values (%s,%s)"
+            cursor.execute(query, (username, password))
+            connection.commit()
+            return redirect(url_for('login'))
+
     return render_template('signup.html', error=error)
 
 
