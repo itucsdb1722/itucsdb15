@@ -77,13 +77,26 @@ def login():
         statement = "SELECT * from Users where Username='" + username + "' and Password='" + password + "'"
         cursor.execute(statement)
         user = cursor.fetchone()
-        if user :
+        if user:
             session['logged_in'] = True
             flash('You are logged in')
             return redirect(url_for('home_page'))
         else:
             error = 'Invalid username or password, try again.'
     return render_template('login.html', error=error)
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    with dbapi2.connect(app.config['dsn']) as connection:
+        cursor = connection.cursor()
+    error = None
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        query = "insert into users (username,password) values (%s,%s)"
+        cursor.execute(query, (username, password))
+    return render_template('signup.html', error=error)
 
 
 @app.route('/logout')
