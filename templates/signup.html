@@ -5,11 +5,11 @@
     <title>Signup</title>
 </head>
 <body>
-        <div class ="container">
+    <div class ="container">
         <h1>Enter your information</h1>
         <br>
-        <form action="" method="post">
-            <input type="text" placeholder="username" name="username" value="{{ request.form.username }}">
+        <form action="/signup" method="post">
+            <input type="text" placeholder="username" name="username" maxlength="10" value="{{ request.form.username }}">
             <input type="password" placeholder="password" name="password" value="{{ request.form.password }}">
             <input class="btn btn-default" type="submit" value="sign up">
         </form>
