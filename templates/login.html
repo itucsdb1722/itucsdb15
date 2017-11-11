@@ -9,9 +9,10 @@
         <h1>Enter your information</h1>
         <br>
         <form action="" method="post">
-            <input type="text" placeholder="username" name="username" value="{{ request.form.username }}">
-            <input type="password" placeholder="password" name="password" value="{{ request.form.password }}">
-            <input class="btn btn-default" type="submit" value="login">
+            <input type="text" placeholder="username" name="username" maxlength="10" value="{{ request.form.username }}">
+            <input type="password" placeholder="password" name="password" maxlength="10" value="{{ request.form.password }}">
+            <input class="btn btn-default" type="submit" value="login" name="login">
+            <input class="btn btn-default" type="submit" value="signup" name="signup">
         </form>
         {% if error %}
         <p class="error">Error: {{error}}</p>
