@@ -63,7 +63,6 @@ def initialize_database():
         cursor.execute(statement)
         connection.commit()
         cursor.close()
-        connection.close()
     return redirect(url_for('home_page'))
 
 
