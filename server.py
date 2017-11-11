@@ -59,7 +59,7 @@ def initialize_database():
         cursor = connection.cursor()
         query = """DROP TABLE IF EXISTS USERS"""
         cursor.execute(query)
-        statement = """CREATE TABLE USERS (NAME VARCHAR(10), PASSWORD VARCHAR(10) )"""
+        statement = """CREATE TABLE USERS (USERNAME VARCHAR(10), PASSWORD VARCHAR(10) )"""
         cursor.execute(statement)
         connection.commit()
         cursor.close()
@@ -71,13 +71,6 @@ def initialize_database():
 def login():
     with dbapi2.connect(app.config['dsn']) as connection:
         cursor = connection.cursor()
-        query = """INSERT INTO USERS VALUES ('aydos','a1')"""
-        cursor.execute(query)
-        query = """INSERT INTO USERS VALUES ('baran','b2')"""
-        cursor.execute(query)
-
-
-
     error = None
     if request.method == 'POST':
         username = request.form['username']
@@ -91,7 +84,6 @@ def login():
             return redirect(url_for('home_page'))
         else:
             error = 'Invalid username or password, try again.'
-    cursor.close()
     return render_template('login.html', error=error)
 
 
