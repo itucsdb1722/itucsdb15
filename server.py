@@ -101,8 +101,9 @@ def signup():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        query = "insert into users (username,password) values (%s,%s)"
+        query = "insert into users values (%s,%s)"
         cursor.execute(query, (username, password))
+        connection.commit()
     return render_template('signup.html', error=error)
 
 
