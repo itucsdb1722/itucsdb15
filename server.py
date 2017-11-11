@@ -59,10 +59,17 @@ def initialize_database():
         cursor = connection.cursor()
         query = """DROP TABLE IF EXISTS USERS"""
         cursor.execute(query)
-        statement = """CREATE TABLE USERS (USERNAME VARCHAR(10), PASSWORD VARCHAR(10) )"""
+        statement = """CREATE TABLE USERS (USERNAME VARCHAR(10) PRIMARY KEY, PASSWORD VARCHAR(10) )"""
+        cursor.execute(statement)
+        query = """DROP TABLE IF EXISTS BOOKS"""
+        cursor.execute(query)
+        statement = """CREATE TABLE BOOKS (ID SERIAL PRIMARY KEY, NAME VARCHAR(20), WRITER VARCHAR(20),
+        CATEGORY VARCHAR(10), YEAR INTEGER, SCORE INTEGER, VOTES INTEGER )"""
+        cursor.execute(statement)
+        statement = """INSERT INTO BOOKS(NAME,WRITER,CATEGORY,YEAR, SCORE, VOTES )
+        VALUES('1984', 'GEORGE ORWELL','distopia','1984',0,0 )"""
         cursor.execute(statement)
         connection.commit()
-        cursor.close()
     return redirect(url_for('home_page'))
 
 
