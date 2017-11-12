@@ -77,13 +77,32 @@ def initialize_database():
         query = """DROP TABLE IF EXISTS BOOKS"""
         cursor.execute(query)
         statement = """CREATE TABLE BOOKS (ID SERIAL PRIMARY KEY, NAME VARCHAR(20), WRITER VARCHAR(20),
-        CATEGORY VARCHAR(10), YEAR INTEGER, SCORE INTEGER, VOTES INTEGER )"""
+        CATEGORY VARCHAR(10), ISBN VARCHAR(10), YEAR INTEGER, SCORE INTEGER, VOTES INTEGER )"""
         cursor.execute(statement)
-        statement = """INSERT INTO BOOKS(NAME,WRITER,CATEGORY,YEAR, SCORE, VOTES )
-        VALUES('1984', 'GEORGE ORWELL','distopia','1984',0,0 )"""
+        statement = """INSERT INTO BOOKS(NAME,WRITER,CATEGORY,ISBN,YEAR, SCORE, VOTES )
+        VALUES('1984', 'GEORGE ORWELL','distopia','0451524934','1984',0,0 )"""
         cursor.execute(statement)
         connection.commit()
     return redirect(url_for('home_page'))
+
+
+@app.route('/adminpg', methods=['POST'])
+def adminpg():
+    with dbapi2.connect(app.config['dsn']) as connection:
+        cursor = connection.cursor()
+        error = None
+        if request.method == 'POST':
+            name = request.form['name']
+            writer = request.form['writer']
+            category = request.form['category']
+            year = request.form['year']
+            ISBN = request.form['ISBN']
+            if 'submit' in request.form:
+                statement = "INSERT INTO BOOKS(NAME,WRITER,CATEGORY,ISBN, YEAR, SCORE, VOTES ) VALUES(' " + name + "','"+writer+"','"+category+"','"+ISBN+"','"+year+"',0,0 )"
+                cursor.execute(statement)
+                connection.commit()
+
+    return render_template('admin.html', error = error)
 
 
 @app.route('/login', methods=['GET', 'POST'])
