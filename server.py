@@ -104,19 +104,28 @@ def login():
                 return redirect(url_for('home_page'))
             else:
                 error = 'Invalid username or password, try again.'
-        elif 'signup' in request.form:
-            statement = "SELECT * from Users where Username='" + username + "'"
-            cursor.execute(statement)
-            test = cursor.fetchone()
-            if test:
-                error = 'Username already in use, try again'
-            else:
-                query = "insert into users values (%s,%s)"
-                cursor.execute(query, (username, password))
-                connection.commit()
-
     return render_template('login.html', error=error)
 
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    with dbapi2.connect(app.config['dsn']) as connection:
+        cursor = connection.cursor()
+    error = None
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        statement = "SELECT * from Users where Username='" + username + "'"
+        cursor.execute(statement)
+        test = cursor.fetchone()
+        if test:
+            error = 'Username already in use, try again'
+        else:
+            query = "insert into users values (%s,%s)"
+            cursor.execute(query, (username, password))
+            connection.commit()
+            return redirect(url_for('login'))
+
+    return render_template('signup.html', error=error)
 
 @app.route('/logout')
 @login_check
