@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+        <form action="" method="post">
+            <input type="text" placeholder="name" name="name"  value="{{ request.form.name }}">
+            <input type="text" placeholder="writer" name="writer" value="{{ request.form.writer}}">
+            <input type="text" placeholder="category" name="category"  value="{{ request.form.category }}">
+            <input type="text" placeholder="isbn" name="isbn" value="{{ request.form.isbn}}">
+            <input type="number" placeholder="year" name="year" value="{{ request.form.year}}">
+            <input class="btn btn-default" type="submit" value="submit" name="submit">
+        </form>
+</body>
+</html>

@@ -50,20 +50,29 @@ def intro():
 
 @app.route('/')
 def home_page():
-    """""
+
     with dbapi2.connect(app.config['dsn']) as connection:
             cursor = connection.cursor()
-    query = "SELECT max(id) from books"
-    cursor.execute(query)
-    maxid = cursor.fetchone()
-    for i in range(0, 4):
-        rand = randint(1, maxid)
-        statement = "Select * from books where id=" + maxid +";"
-        book = cursor.fetchone
-        print(book)
-        """
+            query = "SELECT max(id) from books"
+            cursor.execute(query)
+            maxid = cursor.fetchone()
+            max = maxid[0]
+            names = [] * 0
+            writers = [] * 0
+            isbns = [] * 0
+            for i in range(0, 4):
+                rand = randint(1, max)
+                statement = "Select name, writer, isbn from books where id=" + str(rand)+";"
+                cursor.execute(statement)
+                for name, writer, isbn in cursor:
+                    names.append(name)
+                    writers.append(writer)
+                    isbns.append(isbn)
+
+
+
     now = datetime.datetime.now()
-    return render_template('home.html', current_time=now.ctime())
+    return render_template('home.html', current_time=now.ctime(), maxid=max, name=names[0], writer=writers[0], isbn=isbns[0])
 
 
 @app.route('/initdb')
@@ -86,8 +95,8 @@ def initialize_database():
     return redirect(url_for('home_page'))
 
 
-@app.route('/adminpg', methods=['POST'])
-def adminpg():
+@app.route('/admin', methods=['GET', 'POST'])
+def admin():
     with dbapi2.connect(app.config['dsn']) as connection:
         cursor = connection.cursor()
         error = None
@@ -95,14 +104,15 @@ def adminpg():
             name = request.form['name']
             writer = request.form['writer']
             category = request.form['category']
+            isbn = request.form['isbn']
             year = request.form['year']
-            ISBN = request.form['ISBN']
             if 'submit' in request.form:
-                statement = "INSERT INTO BOOKS(NAME,WRITER,CATEGORY,ISBN, YEAR, SCORE, VOTES ) VALUES(' " + name + "','"+writer+"','"+category+"','"+ISBN+"','"+year+"',0,0 )"
+                statement = "INSERT INTO BOOKS(NAME,WRITER,CATEGORY,ISBN, YEAR, SCORE, VOTES ) VALUES(' " + name + "','"+writer+"','"+category+"','"+isbn+"','"+year+"',0,0 )"
                 cursor.execute(statement)
                 connection.commit()
+                return redirect(url_for('admin'))
 
-    return render_template('admin.html', error = error)
+    return render_template('admin.html', error=error)
 
 
 @app.route('/login', methods=['GET', 'POST'])

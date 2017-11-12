@@ -14,6 +14,13 @@
       <a href="/login">Login</a>
       <a href="/login" style="float: right;">Logout</a>
     </div>
+
+    <div class="books" id ="book">
+      <p>{{name}}</p>
+      <p> {{writer}}</p>
+      <p> {{isbn}}</p>
+
+    </div>
     <a href = "/count"> Go to counter page</a>
 
       {% for message in get_flashed_messages() %}
