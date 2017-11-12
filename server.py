@@ -3,7 +3,9 @@ import json
 import os
 import psycopg2 as dbapi2
 import re
+import random
 
+from random import randint
 from flask import Flask
 from flask import redirect
 from flask import render_template
@@ -47,8 +49,19 @@ def intro():
 
 
 @app.route('/')
-@login_check
 def home_page():
+    """""
+    with dbapi2.connect(app.config['dsn']) as connection:
+            cursor = connection.cursor()
+    query = "SELECT max(id) from books"
+    cursor.execute(query)
+    maxid = cursor.fetchone()
+    for i in range(0, 4):
+        rand = randint(1, maxid)
+        statement = "Select * from books where id=" + maxid +";"
+        book = cursor.fetchone
+        print(book)
+        """
     now = datetime.datetime.now()
     return render_template('home.html', current_time=now.ctime())
 
