@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Registration</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+    <div class ="container">
+        <h1>Enter your information</h1>
+        <br>
+        <form action="" method="post">
+            <input type="text" placeholder="username" name="username" maxlength="10" value="{{ request.form.username }}">
+            <input type="password" placeholder="password" name="password" maxlength="10" value="{{ request.form.password }}">
+            <input class="btn btn-default" type="submit" value="signup" name="signup">
+        </form>
+        {% if error %}
+        <p class="error">Error: {{error}}</p>
+        {% endif %}
+        {% for message in get_flashed_messages() %}
+            {{ message }}
+        {% endfor %}
+    </div>
+</body>
+</html>
