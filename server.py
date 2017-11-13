@@ -69,10 +69,13 @@ def home_page():
                     writers.append(writer)
                     isbns.append(isbn)
 
+    booklink1 = "http://covers.openlibrary.org/b/isbn/" + isbns[0] + "-M.jpg"
+    booklink2 = "http://covers.openlibrary.org/b/isbn/" + isbns[1] + "-M.jpg"
+    booklink3 = "http://covers.openlibrary.org/b/isbn/" + isbns[2] + "-M.jpg"
 
 
     now = datetime.datetime.now()
-    return render_template('home.html', current_time=now.ctime(), maxid=max, name=names[0], writer=writers[0], isbn=isbns[0])
+    return render_template('home.html', current_time=now.ctime(), maxid=max, name=names, writer=writers, isbn=isbns, booklink1=booklink1, booklink2=booklink2, booklink3=booklink3)
 
 
 @app.route('/initdb')
@@ -135,6 +138,7 @@ def login():
                 error = 'Invalid username or password, try again.'
     return render_template('login.html', error=error)
 
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     with dbapi2.connect(app.config['dsn']) as connection:
@@ -155,6 +159,7 @@ def signup():
             return redirect(url_for('login'))
 
     return render_template('signup.html', error=error)
+
 
 @app.route('/logout')
 @login_check

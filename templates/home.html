@@ -16,12 +16,49 @@
     </div>
 
     <div class="books" id ="book">
-      <p>{{name}}</p>
-      <p> {{writer}}</p>
-      <p> {{isbn}}</p>
+
+          <div class ="book" id="book1">
+
+            <div class="cover" id="cov1">
+                <img src="{{booklink1}}" alt="cover" />
+            </div>
+
+            <div class="bookinfo" id="bookinf1">
+                <p align="center">{{name[0]}}</p>
+                <p  align="left"> {{writer[0]}}</p>
+            </div>
+
+          </div>
+
+           <div class ="book" id="book2">
+
+             <div class="cover" id="cov2">
+
+                <img src="{{booklink2}}" alt="cover" />
+            </div>
+
+            <div class="bookinfo" id="bookinf2">
+                <p align="center">{{name[1]}}</p>
+                <p  align="left"> {{writer[1]}}</p>
+            </div>
+
+
+          </div>
+
+          <div class ="book" id="book3">
+             <div class="cover" id="cov3">
+
+                <img src="{{booklink3}}" alt="cover" />
+            </div>
+
+            <div class="bookinfo" id="bookinf3">
+                <p align="center">{{name[2]}}</p>
+                <p align="left"> {{writer[2]}}</p>
+            </div>
+
+          </div>
 
     </div>
-    <a href = "/count"> Go to counter page</a>
 
       {% for message in get_flashed_messages() %}
         {{ message }}
