@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="browsegrid">
-    <img src="static/logo.png" alt="logo" height="100 width="500"/>
+    <img title="Made with https://logomakr.com" src="static/logo.png" alt="logo" height="100 width="500"/>
     <div  class="topnav" id="browsenav">
       <a href ="/">Home</a>
       <a href ="/browse">Browse Books</a>
@@ -46,21 +46,22 @@
 
             </tr>
 
-            {%for i in range(0, maxid)%}
+            {%for a in range(0, maxid)%}
             <tr class="item">
-                <td>{{name[i]}}</td>
-                <td>{{writer[i]}}</td>
-                <td>{{category[i]}}</td>
-                <td>{{year[i]}} </td>
-                <td>{{isbn[i]}}</td>
-                <td>{{score[i]}}</td>
-             {% if maxid == 0 %}
-                <a href="/browse">No match found, sell all the books.</a>
-             {% endif %}
+                <td>{{name[a]}}</td>
+                <td>{{writer[a]}}</td>
+                <td>{{category[a]}}</td>
+                <td>{{year[a]}} </td>
+                <td>{{isbn[a]}}</td>
+                <td>{{score[a]}}</td>
+
             </tr>
             {% endfor %}
 
         </table>
+        {% if maxid < 1 %}
+                <a href="/browse">No match found, sell all the books.</a>
+        {% endif %}
     </div>
 </div>
 </body>

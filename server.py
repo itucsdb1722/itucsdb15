@@ -106,6 +106,9 @@ def initialize_database():
         statement = """INSERT INTO BOOKS(NAME,WRITER,CATEGORY,ISBN,YEAR, SCORE, VOTES )
         VALUES('For Whom the Bell Tolls', 'Ernest Hemingway','Dystopia','0684803356','1940',0,0 )"""
         cursor.execute(statement)
+        statement = """INSERT INTO BOOKS(NAME,WRITER,CATEGORY,ISBN,YEAR, SCORE, VOTES )
+        VALUES('Animal Farm', 'George Orwell','Political Satire','0452284244 ','1945',0,0 )"""
+        cursor.execute(statement)
         connection.commit()
     return redirect(url_for('home_page'))
 
@@ -210,7 +213,7 @@ def browse():
                 scores = [] * 0
                 categories = [] * 0
                 searchquery = request.form['search'].title()
-                statement = "Select name, writer, category, isbn, year, score, votes from books where name = '" + searchquery + "'"
+                statement = "Select name, writer, category, isbn, year, score, votes from books where name = '" + searchquery + "'" + " or writer ='" + searchquery +"' or category ='" + searchquery + "'"
                 cursor.execute(statement)
                 for name, writer, category, isbn, year, score, votes in cursor:
                     names.append(name)
@@ -219,7 +222,6 @@ def browse():
                     years.append(year)
                     scores.append(score)
                     categories.append(category)
-                    i = i+1
 
         return render_template('browse.html', maxid=i, name=names, writer=writers, isbn=isbns, year=years,
                                score=scores, category=categories)
