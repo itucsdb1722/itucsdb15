@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Browse Books</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+
+</head>
+<body>
+    <div  class="topnav" id="navbar">
+      <a href ="/">Home</a>
+      <a href ="/browse">Browse Books</a>
+      <a href ="/profile">Profile</a>
+      <a href="/login">Login</a>
+      <a href="/login" style="float: right;">Logout</a>
+    </div>
+
+
+    <div    class="search" id="searchbox">
+        <form action="" method="post">
+            <input type="text" placeholder="Search" name="search"  value="{{ request.form.search }}">
+        </form>
+    </div>
+
+    <div class="sort"   id="sortselect">
+
+
+    </div>
+
+    <div    class="books"   id="booktable">
+        <table >
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Category</th>
+                <th>Publish Year</th>
+                <th>ISBN</th>
+                <th>Score</th>
+                <th>votes</th>
+            </tr>
+
+            {%for i in range(0, maxid)%}
+            <tr>
+                <td>{{name[i]}}</td>
+                <td>{{writer[i]}}</td>
+                <td>{{category[i]}}</td>
+                <td>{{year[i]}} </td>
+                <td>{{score[i]}}</td>
+                <td>{{isbn[i]}}</td>
+            </tr>
+            {% endfor %}
+
+
+
+        </table>
+    </div>
+</body>
+</html>

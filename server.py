@@ -88,11 +88,23 @@ def initialize_database():
         cursor.execute(statement)
         query = """DROP TABLE IF EXISTS BOOKS"""
         cursor.execute(query)
-        statement = """CREATE TABLE BOOKS (ID SERIAL PRIMARY KEY, NAME VARCHAR(20), WRITER VARCHAR(20),
-        CATEGORY VARCHAR(10), ISBN VARCHAR(10), YEAR INTEGER, SCORE INTEGER, VOTES INTEGER )"""
+        statement = """CREATE TABLE BOOKS (ID SERIAL PRIMARY KEY, NAME VARCHAR(30), WRITER VARCHAR(30),
+        CATEGORY VARCHAR(25), ISBN VARCHAR(10), YEAR INTEGER, SCORE INTEGER, VOTES INTEGER )"""
         cursor.execute(statement)
         statement = """INSERT INTO BOOKS(NAME,WRITER,CATEGORY,ISBN,YEAR, SCORE, VOTES )
-        VALUES('1984', 'GEORGE ORWELL','distopia','0451524934','1984',0,0 )"""
+        VALUES('1984', 'George Orwell','Dystopia','0451524934','1949',0,0 )"""
+        cursor.execute(statement)
+        statement = """INSERT INTO BOOKS(NAME,WRITER,CATEGORY,ISBN,YEAR, SCORE, VOTES )
+        VALUES('Brave New World', 'Aldous Huxley','Dystopia','0060929871','1932',0,0 )"""
+        cursor.execute(statement)
+        statement = """INSERT INTO BOOKS(NAME,WRITER,CATEGORY,ISBN,YEAR, SCORE, VOTES )
+        VALUES('White Fang', 'Jack London','Adventure ','0439236193','1906',0,0 )"""
+        cursor.execute(statement)
+        statement = """INSERT INTO BOOKS(NAME,WRITER,CATEGORY,ISBN,YEAR, SCORE, VOTES )
+        VALUES('Les Misérables', 'Victor Hugo','Historical Fiction','0451525264','1862',0,0 )"""
+        cursor.execute(statement)
+        statement = """INSERT INTO BOOKS(NAME,WRITER,CATEGORY,ISBN,YEAR, SCORE, VOTES )
+        VALUES('For Whom the Bell Tolls', 'Ernest Hemingway','Dystopia','0684803356','1940',0,0 )"""
         cursor.execute(statement)
         connection.commit()
     return redirect(url_for('home_page'))
@@ -159,6 +171,61 @@ def signup():
             return redirect(url_for('login'))
 
     return render_template('signup.html', error=error)
+
+
+@app.route('/browse', methods=['GET', 'POST'])
+def browse():
+    with dbapi2.connect(app.config['dsn']) as connection:
+        cursor = connection.cursor()
+        query = "SELECT max(id) from books"
+        cursor.execute(query)
+        maxid = cursor.fetchone()
+        max = maxid[0]
+        i = 0
+        names = [] * 0
+        writers = [] * 0
+        isbns = [] * 0
+        years = [] * 0
+        scores = [] * 0
+        categories = [] * 0
+        statement = "Select name, writer, category, isbn, year, score, votes from books;"
+        cursor.execute(statement)
+        if request.method == 'GET':
+
+            for name, writer, category, isbn, year, score, votes in cursor:
+                names.append(name)
+                writers.append(writer)
+                isbns.append(isbn)
+                years.append(year)
+                scores.append(score)
+                categories.append(category)
+            return render_template('browse.html', maxid=max, name=names, writer=writers, isbn=isbns, year=years,
+                               score=scores, category=categories)
+
+        if request.method == 'POST':
+                names = [] * 0
+                writers = [] * 0
+                isbns = [] * 0
+                years = [] * 0
+                scores = [] * 0
+                categories = [] * 0
+                searchquery = request.form['search']
+                statement = "Select name, writer, category, isbn, year, score, votes from books where name = '" + searchquery + "'"
+                cursor.execute(statement)
+                for name, writer, category, isbn, year, score, votes in cursor:
+                    names.append(name)
+                    writers.append(writer)
+                    isbns.append(isbn)
+                    years.append(year)
+                    scores.append(score)
+                    categories.append(category)
+                    i = i+1
+        return render_template('browse.html', maxid=i, name=names, writer=writers, isbn=isbns, year=years,
+                               score=scores, category=categories)
+        """"Firstly displaying all available books"""
+
+        """"if user used searched"""
+
 
 
 @app.route('/logout')
