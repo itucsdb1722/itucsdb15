@@ -86,6 +86,11 @@ def initialize_database():
         cursor.execute(query)
         statement = """CREATE TABLE USERS (USERNAME VARCHAR(10) PRIMARY KEY, PASSWORD VARCHAR(10) )"""
         cursor.execute(statement)
+        statement = """INSERT INTO USERS (USERNAME  , PASSWORD  )
+        VALUES ('a', 'a') """
+        cursor.execute(statement)
+        query = """DROP TABLE IF EXISTS FAVBOOKS"""
+        cursor.execute(query)
         query = """DROP TABLE IF EXISTS BOOKS"""
         cursor.execute(query)
         statement = """CREATE TABLE BOOKS (ID SERIAL PRIMARY KEY, NAME VARCHAR(30), WRITER VARCHAR(30),
@@ -106,15 +111,13 @@ def initialize_database():
         statement = """INSERT INTO BOOKS(NAME,WRITER,CATEGORY,ISBN,YEAR, SCORE, VOTES )
         VALUES('For Whom the Bell Tolls', 'Ernest Hemingway','Dystopia','0684803356','1940',0,0 )"""
         cursor.execute(statement)
-        query = """DROP TABLE IF EXISTS FAVBOOKS"""
-        cursor.execute(query)
         statement = """CREATE TABLE FAVBOOKS (USERNAME VARCHAR(10) , BOOK_ID INTEGER REFERENCES BOOKS(ID) )"""
         cursor.execute(statement)
         statement = """INSERT INTO FAVBOOKS (USERNAME  , BOOK_ID  )
-        VALUES ('aaa', 1) """
+        VALUES ('a', 1) """
         cursor.execute(statement)
         statement = """INSERT INTO FAVBOOKS (USERNAME  , BOOK_ID  )
-        VALUES ('aaa', 2) """
+        VALUES ('a', 2) """
         cursor.execute(statement)
         connection.commit()
     return redirect(url_for('home_page'))
@@ -249,21 +252,20 @@ def logout():
 @app.route('/profile')
 @login_check
 def profile():
-    username =session['username']
-    i=0
     with dbapi2.connect(app.config['dsn']) as connection:
         cursor = connection.cursor()
-        query = "SELECT count(username) from favbooks group by username having username='" + username + "'"
-        cursor.execute(query)
-        book_number = cursor.fetchone()
-        names = [] * 0
-        statement = "Select name from books, favbooks where book_id = id and username='" + username + "'"
+        username = session['username']
+        i = 0
+        namess = [] * 0
+        statement = "Select name from books;"
         cursor.execute(statement)
-        for name in cursor:
-            names.append(name)
-            i=i+1
+        if request.method == 'GET':
+            for name in cursor:
+                print(name)
+                namess.append(name)
+                i=i+1
 
-    return render_template('profile.html',user=username,counter = i,name=names)
+        return render_template('profile.html',user=username,counter = i,name=namess)
 
 @app.route('/count')
 def counter_page():

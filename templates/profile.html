@@ -16,32 +16,26 @@
     </div>
 
 
-    <div    class="search" id="searchbox">
-        <form action="" method="post">
-            <input type="text" placeholder="Search" name="search"  value="{{ request.form.search }}">
-        </form>
-    </div>
-
-    <div class="sort"   id="sortselect">
 
 
-    </div>
-
-    <div    class="books"   id="booktable">
-        <table >
+    <div    class="table"   id="booktable">
+        <table id = "booklist" >
             <tr>
-                <th>Title</th>
+                <th onclick="w3.sortHTML('#booktable', '.item', 'td:nth-child(1)')">Title</th>
+                <th onclick="w3.sortHTML('#booktable', '.item', 'td:nth-child(2)')">Author</th>
+                <th onclick="w3.sortHTML('#booktable', '.item', 'td:nth-child(3)')">Category</th>
+                <th onclick="w3.sortHTML('#booktable', '.item', 'td:nth-child(4)')">Publish Year</th>
+                <th>ISBN</th>
+                <th>Score</th>
 
             </tr>
 
             {%for i in range(0, counter)%}
-            <tr>
+            <tr class="item">
                 <td>{{name[i]}}</td>
 
             </tr>
             {% endfor %}
-
-
 
         </table>
     </div>
