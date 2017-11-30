@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <title>Browse Books</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
 
 </head>
 <body>
-    <div  class="topnav" id="navbar">
+<div class="browsegrid">
+    <img src="static/logo.png" alt="logo" height="100 width="500"/>
+    <div  class="topnav" id="browsenav">
       <a href ="/">Home</a>
       <a href ="/browse">Browse Books</a>
       <a href ="/profile">Profile</a>
@@ -16,43 +20,48 @@
     </div>
 
 
-    <div    class="search" id="searchbox">
+    <div  class="searchbox" >
+        <div class="inner">
         <form action="" method="post">
-            <input type="text" placeholder="Search" name="search"  value="{{ request.form.search }}">
+             <span class="icon"><i class="fa fa-search"></i></span>
+            <input type="search" placeholder="Search" name="search" id="search" value="{{ request.form.search }}">
         </form>
+        </div>
     </div>
-
+    <br>
     <div class="sort"   id="sortselect">
 
 
     </div>
 
-    <div    class="books"   id="booktable">
-        <table >
+    <div    class="table"   id="booktable">
+        <table id = "booklist" >
             <tr>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Category</th>
-                <th>Publish Year</th>
+                <th onclick="w3.sortHTML('#booktable', '.item', 'td:nth-child(1)')">Title</th>
+                <th onclick="w3.sortHTML('#booktable', '.item', 'td:nth-child(2)')">Author</th>
+                <th onclick="w3.sortHTML('#booktable', '.item', 'td:nth-child(3)')">Category</th>
+                <th onclick="w3.sortHTML('#booktable', '.item', 'td:nth-child(4)')">Publish Year</th>
                 <th>ISBN</th>
                 <th>Score</th>
-                <th>votes</th>
+
             </tr>
 
             {%for i in range(0, maxid)%}
-            <tr>
+            <tr class="item">
                 <td>{{name[i]}}</td>
                 <td>{{writer[i]}}</td>
                 <td>{{category[i]}}</td>
                 <td>{{year[i]}} </td>
-                <td>{{score[i]}}</td>
                 <td>{{isbn[i]}}</td>
+                <td>{{score[i]}}</td>
+             {% if maxid == 0 %}
+                <a href="/browse">No match found, sell all the books.</a>
+             {% endif %}
             </tr>
             {% endfor %}
 
-
-
         </table>
     </div>
+</div>
 </body>
 </html>

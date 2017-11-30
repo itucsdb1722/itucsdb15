@@ -209,7 +209,7 @@ def browse():
                 years = [] * 0
                 scores = [] * 0
                 categories = [] * 0
-                searchquery = request.form['search']
+                searchquery = request.form['search'].title()
                 statement = "Select name, writer, category, isbn, year, score, votes from books where name = '" + searchquery + "'"
                 cursor.execute(statement)
                 for name, writer, category, isbn, year, score, votes in cursor:
@@ -220,6 +220,7 @@ def browse():
                     scores.append(score)
                     categories.append(category)
                     i = i+1
+
         return render_template('browse.html', maxid=i, name=names, writer=writers, isbn=isbns, year=years,
                                score=scores, category=categories)
         """"Firstly displaying all available books"""
