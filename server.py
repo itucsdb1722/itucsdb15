@@ -222,12 +222,11 @@ def browse():
                     years.append(year)
                     scores.append(score)
                     categories.append(category)
+                    i = i+1
 
         return render_template('browse.html', maxid=i, name=names, writer=writers, isbn=isbns, year=years,
                                score=scores, category=categories)
-        """"Firstly displaying all available books"""
 
-        """"if user used searched"""
 
 
 
