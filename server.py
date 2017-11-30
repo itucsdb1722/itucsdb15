@@ -111,6 +111,9 @@ def initialize_database():
         statement = """INSERT INTO BOOKS(NAME,WRITER,CATEGORY,ISBN,YEAR, SCORE, VOTES )
         VALUES('For Whom the Bell Tolls', 'Ernest Hemingway','Dystopia','0684803356','1940',0,0 )"""
         cursor.execute(statement)
+        statement = """INSERT INTO BOOKS(NAME,WRITER,CATEGORY,ISBN,YEAR, SCORE, VOTES )
+        VALUES('Animal Farm', 'George Orwell','Political Satire','0452284244 ','1945',0,0 )"""
+        cursor.execute(statement)
         statement = """CREATE TABLE FAVBOOKS (USERNAME VARCHAR(10) , BOOK_ID INTEGER REFERENCES BOOKS(ID) )"""
         cursor.execute(statement)
         statement = """INSERT INTO FAVBOOKS (USERNAME  , BOOK_ID  )
@@ -223,8 +226,8 @@ def browse():
                 years = [] * 0
                 scores = [] * 0
                 categories = [] * 0
-                searchquery = request.form['search']
-                statement = "Select name, writer, category, isbn, year, score, votes from books where name = '" + searchquery + "'"
+                searchquery = request.form['search'].title()
+                statement = "Select name, writer, category, isbn, year, score, votes from books where name = '" + searchquery + "'" + " or writer ='" + searchquery + "' or category ='" + searchquery + "'"
                 cursor.execute(statement)
                 for name, writer, category, isbn, year, score, votes in cursor:
                     names.append(name)
@@ -236,9 +239,6 @@ def browse():
                     i = i+1
         return render_template('browse.html', maxid=i, name=names, writer=writers, isbn=isbns, year=years,
                                score=scores, category=categories)
-        """"Firstly displaying all available books"""
-
-        """"if user used searched"""
 
 
 
@@ -261,11 +261,10 @@ def profile():
         cursor.execute(statement)
         if request.method == 'GET':
             for name in cursor:
-                print(name)
-                namess.append(name)
+                namess.append(str(name[0]))
                 i=i+1
 
-        return render_template('profile.html',user=username,counter = i,name=namess)
+        return render_template('profile.html', user=username, counter=i, name=namess)
 
 @app.route('/count')
 def counter_page():
